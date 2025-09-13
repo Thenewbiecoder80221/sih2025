@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishi Mitra - AI Farmer Advisory System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hero-bg {
+            background-image: linear-gradient(to right, rgba(0,0,0,0.6), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1599591439249-105221971b3e?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .modal {
+            display: none; /* Hidden by default */
+        }
+        .dashboard-view {
+            display: none;
+        }
+        .chat-bubble-user {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .chat-bubble-ai {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Landing Page -->
+    <div id="landingPage">
+        <header class="bg-white shadow-md">
+            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="text-2xl font-bold text-green-600">
+                    <i class="fas fa-leaf mr-2"></i>Krishi Mitra
+                </div>
+                <div class="flex items-center">
+                    <button id="langToggleLanding" class="bg-gray-200 text-gray-800 font-semibold px-4 py-2 rounded-lg hover:bg-gray-300 transition duration-300 mr-4">മലയാളം</button>
+                    <button id="loginBtn" class="bg-green-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300" data-lang-en="Login / Signup" data-lang-ml="ലോഗിൻ / സൈൻ അപ്പ്">Login / Signup</button>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <section class="hero-bg text-white">
+                <div class="container mx-auto px-6 py-24 text-center">
+                    <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4" data-lang-en="Your AI Companion for Smart Farming" data-lang-ml="സ്മാർട്ട് ഫാർമിംഗിനുള്ള നിങ്ങളുടെ AI കൂട്ടാളി">Your AI Companion for Smart Farming</h1>
+                    <p class="text-lg md:text-xl mb-8" data-lang-en="Get instant answers to your farming questions, weather alerts, and market prices, all in one place." data-lang-ml="നിങ്ങളുടെ കാർഷിക ചോദ്യങ്ങൾക്കും കാലാവസ്ഥാ മുന്നറിയിപ്പുകൾക്കും വിപണി വിലകൾക്കും തൽക്ഷണ ഉത്തരങ്ങൾ ഒരിടത്ത് നേടുക.">Get instant answers to your farming questions, weather alerts, and market prices, all in one place.</p>
+                    <button id="getStartedBtn" class="bg-white text-green-600 font-bold py-3 px-8 rounded-full text-lg hover:bg-gray-200 transition duration-300" data-lang-en="Get Started" data-lang-ml="തുടങ്ങുക">Get Started</button>
+                </div>
+            </section>
+
+             <!-- Features Section from original UI -->
+            <section class="py-16 bg-white">
+                <div class="container mx-auto px-6 text-center">
+                    <h2 class="text-3xl font-bold mb-2" data-lang-en="How Krishi Mitra Helps You" data-lang-ml="കൃഷി മിത്ര നിങ്ങളെ എങ്ങനെ സഹായിക്കുന്നു">How Krishi Mitra Helps You</h2>
+                    <p class="text-gray-600 mb-12" data-lang-en="Empowering farmers with technology and data." data-lang-ml="സാങ്കേതികവിദ്യയും ഡാറ്റയും ഉപയോഗിച്ച് കർഷകരെ ശാക്തീകരിക്കുന്നു.">Empowering farmers with technology and data.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="feature-card bg-gray-50 p-8 rounded-lg shadow-sm transition duration-300">
+                            <div class="text-green-500 text-5xl mb-4"><i class="fas fa-robot"></i></div>
+                            <h3 class="text-xl font-semibold mb-2" data-lang-en="AI-Powered Advisory" data-lang-ml="AI-പവർഡ് ഉപദേശം">AI-Powered Advisory</h3>
+                            <p class="text-gray-600" data-lang-en="Ask any question about crops, soil, pests, and get instant, reliable answers from our advanced AI." data-lang-ml="വിളകൾ, മണ്ണ്, കീടങ്ങൾ എന്നിവയെക്കുറിച്ച് ഏത് ചോദ്യവും ചോദിക്കുക, ഞങ്ങളുടെ AI-യിൽ നിന്ന് തൽക്ഷണവും വിശ്വസനീയവുമായ ഉത്തരങ്ങൾ നേടുക.">Ask any question about crops, soil, pests, and get instant, reliable answers from our advanced AI.</p>
+                        </div>
+                        <div class="feature-card bg-gray-50 p-8 rounded-lg shadow-sm transition duration-300">
+                            <div class="text-blue-500 text-5xl mb-4"><i class="fas fa-cloud-sun-rain"></i></div>
+                            <h3 class="text-xl font-semibold mb-2" data-lang-en="Live Weather Updates" data-lang-ml="തത്സമയ കാലാവസ്ഥാ അപ്‌ഡേറ്റുകൾ">Live Weather Updates</h3>
+                            <p class="text-gray-600" data-lang-en="Get real-time weather forecasts for your location to plan your farming activities effectively." data-lang-ml="നിങ്ങളുടെ കാർഷിക പ്രവർത്തനങ്ങൾ കാര്യക്ഷമമായി ആസൂത്രണം ചെയ്യാൻ നിങ്ങളുടെ സ്ഥലത്തെ തത്സമയ കാലാവസ്ഥാ പ്രവചനങ്ങൾ നേടുക.">Get real-time weather forecasts for your location to plan your farming activities effectively.</p>
+                        </div>
+                        <div class="feature-card bg-gray-50 p-8 rounded-lg shadow-sm transition duration-300">
+                            <div class="text-yellow-500 text-5xl mb-4"><i class="fas fa-chart-line"></i></div>
+                            <h3 class="text-xl font-semibold mb-2" data-lang-en="Market Price Info" data-lang-ml="വിപണി വില വിവരം">Market Price Info</h3>
+                            <p class="text-gray-600" data-lang-en="Stay updated with the latest market prices for various crops to get the best value for your produce." data-lang-ml="നിങ്ങളുടെ ഉൽപ്പന്നങ്ങൾക്ക് മികച്ച വില ലഭിക്കുന്നതിന് വിവിധ വിളകളുടെ ഏറ്റവും പുതിയ വിപണി വിലകൾ അപ്‌ഡേറ്റ് ചെയ്യുക.">Stay updated with the latest market prices for various crops to get the best value for your produce.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-gray-800 text-white py-8">
+            <div class="container mx-auto px-6 text-center">
+                <p data-lang-en="© 2024 Krishi Mitra. All Rights Reserved. Made with <i class='fas fa-heart text-red-500'></i> for Indian Farmers." data-lang-ml="© 2024 കൃഷി മിത്ര. എല്ലാ അവകാശങ്ങളും നിക്ഷിപ്തം. ഇന്ത്യൻ കർഷകർക്കായി <i class='fas fa-heart text-red-500'></i> ഉപയോഗിച്ച് നിർമ്മിച്ചത്.">&copy; 2024 Krishi Mitra. All Rights Reserved. Made with <i class="fas fa-heart text-red-500"></i> for Indian Farmers.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Login/Signup Modal -->
+    <div id="authModal" class="modal fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 overflow-y-auto py-10">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg mx-4 p-8 relative">
+            <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+            
+            <div id="loginForm">
+                <h2 class="text-2xl font-bold mb-6 text-center" data-lang-en="Welcome Back!" data-lang-ml="വീണ്ടും സ്വാഗതം!">Welcome Back!</h2>
+                <form>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-semibold mb-2" for="login-phone" data-lang-en="Phone Number" data-lang-ml="ഫോൺ നമ്പർ">Phone Number</label>
+                        <input class="w-full px-4 py-2 border rounded-lg" type="tel" id="login-phone" data-lang-en-placeholder="Enter your 10-digit number" data-lang-ml-placeholder="നിങ്ങളുടെ 10 അക്ക നമ്പർ നൽകുക" placeholder="Enter your 10-digit number">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-semibold mb-2" for="login-password" data-lang-en="Password" data-lang-ml="പാസ്‌വേഡ്">Password</label>
+                        <input class="w-full px-4 py-2 border rounded-lg" type="password" id="login-password" placeholder="********">
+                    </div>
+                    <button id="submitLoginBtn" type="button" class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700" data-lang-en="Login" data-lang-ml="ലോഗിൻ ചെയ്യുക">Login</button>
+                </form>
+                <p class="text-center text-sm text-gray-600 mt-4">
+                    <span data-lang-en="Don't have an account?" data-lang-ml="അക്കൗണ്ട് ഇല്ലേ?">Don't have an account?</span> <a href="#" id="showSignup" class="text-green-600 font-semibold hover:underline" data-lang-en="Sign up" data-lang-ml="സൈൻ അപ്പ് ചെയ്യുക">Sign up</a>
+                </p>
+            </div>
+
+            <div id="signupForm" style="display: none;">
+                <h2 class="text-2xl font-bold mb-4 text-center" data-lang-en="Create Your Account" data-lang-ml="നിങ്ങളുടെ അക്കൗണ്ട് സൃഷ്ടിക്കുക">Create Your Account</h2>
+                <p class="text-center text-gray-600 mb-6" data-lang-en="This information helps us give you better advice." data-lang-ml="ഈ വിവരങ്ങൾ നിങ്ങൾക്ക് മികച്ച ഉപദേശം നൽകാൻ ഞങ്ങളെ സഹായിക്കുന്നു.">This information helps us give you better advice.</p>
+                <form class="space-y-4">
+                    <input class="w-full px-4 py-2 border rounded-lg" type="text" id="signup-name" data-lang-en-placeholder="Full Name" data-lang-ml-placeholder="മുഴുവൻ പേര്" placeholder="Full Name">
+                    <input class="w-full px-4 py-2 border rounded-lg" type="tel" id="signup-phone" data-lang-en-placeholder="10-digit Phone Number" data-lang-ml-placeholder="10 അക്ക ഫോൺ നമ്പർ" placeholder="10-digit Phone Number">
+                    <input class="w-full px-4 py-2 border rounded-lg" type="text" id="signup-location" data-lang-en-placeholder="Your Village/City, State (e.g., Agartala, Tripura)" data-lang-ml-placeholder="നിങ്ങളുടെ ഗ്രാമം/നഗരം, സംസ്ഥാനം (ഉദാ: അഗർത്തല, ത്രിപുര)" placeholder="Your Village/City, State (e.g., Agartala, Tripura)">
+                    <input class="w-full px-4 py-2 border rounded-lg" type="password" id="signup-password" data-lang-en-placeholder="Create a strong password" data-lang-ml-placeholder="ശക്തമായ ഒരു പാസ്‌വേഡ് ഉണ്ടാക്കുക" placeholder="Create a strong password">
+                    <input class="w-full px-4 py-2 border rounded-lg" type="text" id="signup-crops" data-lang-en-placeholder="Main crops you grow (e.g., Rice, Tomato)" data-lang-ml-placeholder="നിങ്ങൾ കൃഷി ചെയ്യുന്ന പ്രധാന വിളകൾ (ഉദാ: നെല്ല്, തക്കാളി)" placeholder="Main crops you grow (e.g., Rice, Tomato)">
+                    <textarea class="w-full px-4 py-2 border rounded-lg" id="signup-history" data-lang-en-placeholder="Any recent crop failures or issues?" data-lang-ml-placeholder="സമീപകാലത്ത് എന്തെങ്കിലും വിളനാശമോ പ്രശ്നങ്ങളോ?" placeholder="Any recent crop failures or issues?" rows="2"></textarea>
+                    <button id="submitSignupBtn" type="button" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700" data-lang-en="Sign Up" data-lang-ml="സൈൻ അപ്പ്">Sign Up</button>
+                </form>
+                <p class="text-center text-sm text-gray-600 mt-4">
+                    <span data-lang-en="Already have an account?" data-lang-ml="ഇതിനകം അക്കൗണ്ട് ഉണ്ടോ?">Already have an account?</span> <a href="#" id="showLogin" class="text-green-600 font-semibold hover:underline" data-lang-en="Log in" data-lang-ml="ലോഗിൻ ചെയ്യുക">Log in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Farmer Dashboard -->
+    <div id="dashboard" class="dashboard-view min-h-screen bg-gray-100">
+        <div class="flex h-screen">
+            <aside class="w-64 bg-white shadow-lg flex flex-col">
+                <div class="p-6 text-2xl font-bold text-green-600 border-b"><i class="fas fa-leaf mr-2"></i>Krishi Mitra</div>
+                <nav class="flex-grow p-4">
+                    <a href="#chat" class="nav-item flex items-center px-4 py-3 text-lg text-white bg-green-600 rounded-lg">
+                        <i class="fas fa-comments w-8"></i> <span data-lang-en="AI Chat" data-lang-ml="AI ചാറ്റ്">AI Chat</span>
+                    </a>
+                    <a href="#suggestions" class="nav-item flex items-center px-4 py-3 text-lg text-gray-700 hover:bg-gray-200 rounded-lg mt-2">
+                        <i class="fas fa-lightbulb w-8"></i> <span data-lang-en="Suggestions" data-lang-ml="നിർദ്ദേശങ്ങൾ">Suggestions</span>
+                    </a>
+                    <a href="#market" class="nav-item flex items-center px-4 py-3 text-lg text-gray-700 hover:bg-gray-200 rounded-lg mt-2">
+                        <i class="fas fa-chart-line w-8"></i> <span data-lang-en="Market Prices" data-lang-ml="വിപണി വിലകൾ">Market Prices</span>
+                    </a>
+                     <a href="#assistance" class="nav-item flex items-center px-4 py-3 text-lg text-gray-700 hover:bg-gray-200 rounded-lg mt-2">
+                        <i class="fas fa-user-headset w-8"></i> <span data-lang-en="Get Help" data-lang-ml="സഹായം നേടുക">Get Help</span>
+                    </a>
+                    <a href="#history" class="nav-item flex items-center px-4 py-3 text-lg text-gray-700 hover:bg-gray-200 rounded-lg mt-2">
+                        <i class="fas fa-history w-8"></i> <span data-lang-en="Chat History" data-lang-ml="ചാറ്റ് ചരിത്രം">Chat History</span>
+                    </a>
+                </nav>
+                <div class="p-4 border-t">
+                    <button id="logoutBtn" class="w-full flex items-center justify-center bg-red-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-red-600">
+                        <i class="fas fa-sign-out-alt mr-2"></i><span data-lang-en="Logout" data-lang-ml="ലോഗ്ഔട്ട്">Logout</span>
+                    </button>
+                </div>
+            </aside>
+            
+            <main class="flex-1 flex flex-col">
+                <header class="bg-white shadow-sm p-4 flex justify-between items-center">
+                    <h1 id="headerTitle" class="text-2xl font-bold" data-lang-en="AI Chat Advisory" data-lang-ml="AI ചാറ്റ് ഉപദേശം">AI Chat Advisory</h1>
+                    <div class="flex items-center gap-4">
+                        <button id="langToggleDashboard" class="bg-gray-200 text-gray-800 font-semibold px-4 py-2 rounded-lg hover:bg-gray-300 transition duration-300">മലയാളം</button>
+                        <div id="weatherWidget" class="text-right">
+                            <p class="font-semibold text-lg">29°C <i class="fas fa-cloud-sun text-yellow-500"></i></p>
+                            <p id="locationDisplay" class="text-sm text-gray-600">Agartala, Tripura</p>
+                        </div>
+                        <img class="w-10 h-10 rounded-full" src="https://placehold.co/100x100/A0AEC0/FFFFFF?text=F" alt="User Avatar">
+                    </div>
+                </header>
+
+                <div class="flex-1 p-6 overflow-y-auto">
+                    <!-- Chat View -->
+                    <div id="chatView" class="page-content bg-white rounded-lg shadow-md h-full flex flex-col">
+                        <div class="p-4 border-b flex justify-between items-center">
+                            <h2 class="font-semibold" data-lang-en="Conversation" data-lang-ml="സംഭാഷണം">Conversation</h2>
+                            <button id="clearChatBtn" class="text-sm text-red-500 hover:underline"><i class="fas fa-trash-alt mr-1"></i><span data-lang-en="Clear Chat" data-lang-ml="ചാറ്റ് മായ്‌ക്കുക">Clear Chat</span></button>
+                        </div>
+                        <div id="chat-messages" class="flex-1 p-6 space-y-4 overflow-y-auto">
+                            <div class="flex items-start gap-3">
+                                <div class="bg-green-500 p-2 rounded-full text-white self-start"><i class="fas fa-robot"></i></div>
+                                <div class="chat-bubble-ai p-4 rounded-lg max-w-lg">
+                                    <p class="font-semibold mb-1">Krishi Mitra AI</p>
+                                    <p data-lang-en="Namaste! How can I help you? You can type, use the microphone for Malayalam voice input, or upload an image of your crop." data-lang-ml="നമസ്കാരം! ഞാൻ നിങ്ങളെ എങ്ങനെ സഹായിക്കും? നിങ്ങൾക്ക് ടൈപ്പ് ചെയ്യാം, മലയാളം വോയിസ് ഇൻപുട്ടിനായി മൈക്രോഫോൺ ഉപയോഗിക്കാം, അല്ലെങ്കിൽ നിങ്ങളുടെ വിളയുടെ ചിത്രം അപ്‌ലോഡ് ചെയ്യാം.">Namaste! How can I help you? You can type, use the microphone for Malayalam voice input, or upload an image of your crop.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-gray-100 border-t">
+                             <div class="flex items-center gap-2 md:gap-4">
+                                <input id="chat-input" type="text" class="flex-1 px-4 py-3 border rounded-full" data-lang-en-placeholder="Ask a question..." data-lang-ml-placeholder="ചോദ്യം ചോദിക്കുക..." placeholder="ചോദ്യം ചോദിക്കുക (Ask a question)...">
+                                <input type="file" id="imageUpload" class="hidden" accept="image/*">
+                                <button id="imageUploadBtn" title="Upload Image" class="bg-gray-200 text-gray-600 w-12 h-12 rounded-full text-xl hover:bg-gray-300"><i class="fas fa-camera"></i></button>
+                                <button id="voiceInputBtn" title="Malayalam Voice Input" class="bg-blue-500 text-white w-12 h-12 rounded-full text-xl hover:bg-blue-600"><i class="fas fa-microphone"></i></button>
+                                <button id="sendMessageBtn" title="Send Message" class="bg-green-600 text-white w-12 h-12 rounded-full text-xl hover:bg-green-700"><i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Suggestions View -->
+                    <div id="suggestionsView" class="page-content" style="display: none;">
+                        <div class="space-y-6">
+                            <div class="bg-white p-6 rounded-lg shadow-md">
+                                <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-spray-can mr-3 text-red-500"></i><span data-lang-en="Probable Pesticide Advice" data-lang-ml="സാധ്യമായ കീടനാശിനി ഉപദേശം">Probable Pesticide Advice</span></h2>
+                                <p class="text-gray-600 mb-4" data-lang-en="Based on your location (Tripura) and common crops like Rice and Tomato." data-lang-ml="നിങ്ങളുടെ സ്ഥലം (ത്രിപുര), നെല്ല്, തക്കാളി തുടങ്ങിയ സാധാരണ വിളകൾ എന്നിവ അടിസ്ഥാനമാക്കി.">Based on your location (Tripura) and common crops like Rice and Tomato.</p>
+                            </div>
+                             <div class="bg-white p-6 rounded-lg shadow-md">
+                                <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-calendar-alt mr-3 text-blue-500"></i><span data-lang-en="Local Crop Calendar (Tripura)" data-lang-ml="പ്രാദേശിക വിള കലണ്ടർ (ത്രിപുര)">Local Crop Calendar (Tripura)</span></h2>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                        <p class="font-semibold text-blue-800" data-lang-en="Kharif Season (June - Oct)" data-lang-ml="ഖാരിഫ് സീസൺ (ജൂൺ - ഒക്ടോബർ)">Kharif Season (June - Oct)</p>
+                                        <p class="text-blue-700" data-lang-en="Best for: Rice, Maize, Jute." data-lang-ml="ഏറ്റവും മികച്ചത്: നെല്ല്, ചോളം, ചണം.">Best for: Rice, Maize, Jute.</p>
+                                    </div>
+                                    <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                        <p class="font-semibold text-green-800" data-lang-en="Rabi Season (Nov - Mar)" data-lang-ml="റാബി സീസൺ (നവംബർ - മാർച്ച്)">Rabi Season (Nov - Mar)</p>
+                                        <p class="text-green-700" data-lang-en="Best for: Potato, Mustard, Pulses, Vegetables." data-lang-ml="ഏറ്റവും മികച്ചത്: ഉരുളക്കിഴങ്ങ്, കടുക്, പയർവർഗ്ഗങ്ങൾ, പച്ചക്കറികൾ.">Best for: Potato, Mustard, Pulses, Vegetables.</p>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="bg-white p-6 rounded-lg shadow-md">
+                                <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-scroll mr-3 text-yellow-500"></i><span data-lang-en="Government Schemes" data-lang-ml="സർക്കാർ പദ്ധതികൾ">Government Schemes</span></h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Market Prices View -->
+                    <div id="marketView" class="page-content" style="display: none;">
+                        <div class="space-y-6">
+                             <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-green-500">
+                                <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-store mr-3 text-green-500"></i><span data-lang-en="Sell Your Crop" data-lang-ml="നിങ്ങളുടെ വിള വിൽക്കുക">Sell Your Crop</span></h2>
+                                <form id="sellCropForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+                                    <div>
+                                        <label for="sellCropSelect" class="block text-sm font-medium text-gray-700" data-lang-en="Select Crop" data-lang-ml="വിള തിരഞ്ഞെടുക്കുക">Select Crop</label>
+                                        <select id="sellCropSelect" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+                                            <option value="">-- Select --</option>
+                                            <option value="Paddy (Rice)">Paddy (Rice)</option>
+                                            <option value="Potato">Potato</option>
+                                            <option value="Tomato">Tomato</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="sellQuantity" class="block text-sm font-medium text-gray-700" data-lang-en="Quantity (Quintals)" data-lang-ml="അളവ് (ക്വിന്റൽ)">Quantity (Quintals)</label>
+                                        <input type="number" id="sellQuantity" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" data-lang-en-placeholder="e.g., 10" data-lang-ml-placeholder="ഉദാ: 10" placeholder="e.g., 10">
+                                    </div>
+                                    <div>
+                                        <label for="sellPrice" class="block text-sm font-medium text-gray-700" data-lang-en="Your Selling Price (per Quintal)" data-lang-ml="നിങ്ങളുടെ വിൽപ്പന വില (ക്വിന്റലിന്)">Your Selling Price (per Quintal)</label>
+                                        <input type="number" id="sellPrice" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" data-lang-en-placeholder="e.g., 2250" data-lang-ml-placeholder="ഉദാ: 2250" placeholder="e.g., 2250">
+                                    </div>
+                                    <button type="submit" class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 flex items-center justify-center"><i class="fas fa-paper-plane mr-2"></i><span data-lang-en="Post for Sale" data-lang-ml="വിൽപ്പനയ്ക്കായി പോസ്റ്റ് ചെയ്യുക">Post for Sale</span></button>
+                                </form>
+                                <div id="sellMarketPriceDisplay" class="mt-3 text-sm text-gray-600 h-5"></div>
+                            </div>
+                             <div class="bg-white p-6 rounded-lg shadow-md">
+                                <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-list-alt mr-3 text-indigo-500"></i><span data-lang-en="Your Active Sale Listings" data-lang-ml="നിങ്ങളുടെ സജീവ വിൽപ്പന ലിസ്റ്റിംഗുകൾ">Your Active Sale Listings</span></h2>
+                                <div id="activeSaleListings" class="space-y-2 text-gray-600">
+                                    <p data-lang-en="You have no active sale listings." data-lang-ml="നിങ്ങൾക്ക് സജീവ വിൽപ്പന ലിസ്റ്റിംഗുകളൊന്നുമില്ല.">You have no active sale listings.</p>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-md">
+                                <h2 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-chart-bar mr-3 text-green-500"></i><span data-lang-en="Live Market Prices (Agartala Mandi)" data-lang-ml="തത്സമയ മാർക്കറ്റ് വിലകൾ (അഗർത്തല മണ്ഡി)">Live Market Prices (Agartala Mandi)</span></h2>
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full bg-white border">
+                                        <thead class="bg-gray-100">
+                                            <tr>
+                                                <th class="py-3 px-4 border-b text-left" data-lang-en="Crop" data-lang-ml="വിള">Crop</th>
+                                                <th class="py-3 px-4 border-b text-left" data-lang-en="Variety" data-lang-ml="ഇനം">Variety</th>
+                                                <th class="py-3 px-4 border-b text-right" data-lang-en="Price per Quintal (₹)" data-lang-ml="ക്വിന്റലിന് വില (₹)">Price per Quintal (₹)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="py-3 px-4 border-b">Paddy (Rice)</td>
+                                                <td class="py-3 px-4 border-b">Common</td>
+                                                <td class="py-3 px-4 border-b text-right font-medium">₹ 2,203</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="py-3 px-4 border-b">Potato</td>
+                                                <td class="py-3 px-4 border-b">Jyoti</td>
+                                                <td class="py-3 px-4 border-b text-right font-medium">₹ 1,500</td>
+                                            </tr>
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="py-3 px-4 border-b">Tomato</td>
+                                                <td class="py-3 px-4 border-b">Local</td>
+                                                <td class="py-3 px-4 border-b text-right font-medium">₹ 2,100</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Assistance View -->
+                    <div id="assistanceView" class="page-content" style="display: none;">
+                        <div class="bg-white p-6 md:p-8 rounded-lg shadow-md max-w-2xl mx-auto">
+                            <h2 class="text-2xl md:text-3xl font-bold mb-2" data-lang-en="Need Additional Help?" data-lang-ml="കൂടുതൽ സഹായം ആവശ്യമുണ്ടോ?">Need Additional Help?</h2>
+                            <p class="text-gray-600 mb-6" data-lang-en="If the AI couldn't solve your problem, please fill out the form below. An agricultural officer will contact you shortly." data-lang-ml="AI-ക്ക് നിങ്ങളുടെ പ്രശ്നം പരിഹരിക്കാൻ കഴിഞ്ഞില്ലെങ്കിൽ, ദയവായി താഴെയുള്ള ഫോം പൂരിപ്പിക്കുക. ഒരു കൃഷി ഓഫീസർ ഉടൻ നിങ്ങളെ ബന്ധപ്പെടും.">If the AI couldn't solve your problem, please fill out the form below. An agricultural officer will contact you shortly.</p>
+                            <form id="assistanceForm">
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 text-sm font-semibold mb-2" for="assistance-phone" data-lang-en="Phone Number to Contact" data-lang-ml="ബന്ധപ്പെടാനുള്ള ഫോൺ നമ്പർ">Phone Number to Contact</label>
+                                    <input class="w-full px-4 py-2 border rounded-lg" type="tel" id="assistance-phone" data-lang-en-placeholder="Your phone number" data-lang-ml-placeholder="നിങ്ങളുടെ ഫോൺ നമ്പർ" placeholder="Your phone number">
+                                </div>
+                                <div class="mb-6">
+                                    <label class="block text-gray-700 text-sm font-semibold mb-2" for="assistance-issue" data-lang-en="Briefly describe your issue" data-lang-ml="നിങ്ങളുടെ പ്രശ്നം ഹ്രസ്വമായി വിവരിക്കുക">Briefly describe your issue</label>
+                                    <textarea class="w-full px-4 py-2 border rounded-lg" id="assistance-issue" rows="4" data-lang-en-placeholder="What do you need help with?" data-lang-ml-placeholder="നിങ്ങൾക്ക് എന്ത് സഹായമാണ് വേണ്ടത്?" placeholder="What do you need help with?"></textarea>
+                                </div>
+                                <button id="submitAssistanceBtn" type="submit" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700" data-lang-en="Request Assistance" data-lang-ml="സഹായം അഭ്യർത്ഥിക്കുക">Request Assistance</button>
+                            </form>
+                             <div id="assistanceSuccessMessage" class="hidden mt-6 p-4 bg-green-100 text-green-800 border border-green-200 rounded-lg">
+                                <p class="font-semibold" data-lang-en="Request Submitted!" data-lang-ml="അഭ്യർത്ഥന സമർപ്പിച്ചു!">Request Submitted!</p>
+                                <p data-lang-en="Thank you. An officer will contact you on the provided number shortly." data-lang-ml="നന്ദി. നൽകിയിട്ടുള്ള നമ്പറിൽ ഒരു ഓഫീസർ ഉടൻ നിങ്ങളെ ബന്ധപ്പെടും.">Thank you. An officer will contact you on the provided number shortly.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History View -->
+                    <div id="historyView" class="page-content" style="display: none;">
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                           <h2 class="text-2xl font-bold mb-4" data-lang-en="Chat History" data-lang-ml="ചാറ്റ് ചരിത്രം">Chat History</h2>
+                           <div class="border-t pt-4 text-gray-600" data-lang-en="Your past conversations will appear here. For now, it's empty." data-lang-ml="നിങ്ങളുടെ മുൻകാല സംഭാഷണങ്ങൾ ഇവിടെ ദൃശ്യമാകും. തൽക്കാലം, ഇത് ശൂന്യമാണ്.">Your past conversations will appear here. For now, it's empty.</div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let currentLanguage = 'en';
+
+            const translations = {
+                en: {
+                    aiChatAdvisory: 'AI Chat Advisory',
+                    suggestionsAndGuidelines: 'Suggestions & Guidelines',
+                    marketPrices: 'Market Prices',
+                    assistance: 'Human Assistance',
+                    chatHistory: 'Chat History'
+                },
+                ml: {
+                    aiChatAdvisory: 'AI ചാറ്റ് ഉപദേശം',
+                    suggestionsAndGuidelines: 'നിർദ്ദേശങ്ങളും മാർഗ്ഗനിർദ്ദേശങ്ങളും',
+                    marketPrices: 'വിപണി വിലകൾ',
+                    assistance: 'സഹായം നേടുക',
+                    chatHistory: 'ചാറ്റ് ചരിത്രം'
+                }
+            };
+
+             const marketData = {
+                "Paddy (Rice)": 2203,
+                "Potato": 1500,
+                "Tomato": 2100
+            };
+            
+            const switchLanguage = (lang) => {
+                currentLanguage = lang;
+                document.querySelectorAll('[data-lang-en]').forEach(el => {
+                    const text = el.getAttribute(lang === 'en' ? 'data-lang-en' : 'data-lang-ml');
+                    if (el.innerHTML.includes('<i')) {
+                         const iconHTML = el.querySelector('i').outerHTML;
+                         el.innerHTML = iconHTML + ' ' + text;
+                    } else {
+                         el.innerHTML = text;
+                    }
+                });
+                 document.querySelectorAll('[data-lang-en-placeholder]').forEach(el => {
+                    const placeholderText = el.getAttribute(lang === 'en' ? 'data-lang-en-placeholder' : 'data-lang-ml-placeholder');
+                    el.placeholder = placeholderText;
+                });
+
+                const activeNavItem = document.querySelector('.nav-item.bg-green-600');
+                if (activeNavItem) {
+                    const pageKey = activeNavItem.getAttribute('href').substring(1);
+                    const pageTitles = {
+                        chat: translations[lang].aiChatAdvisory,
+                        suggestions: translations[lang].suggestionsAndGuidelines,
+                        market: translations[lang].marketPrices,
+                        assistance: translations[lang].assistance,
+                        history: translations[lang].chatHistory
+                    };
+                    document.getElementById('headerTitle').textContent = pageTitles[pageKey];
+                }
+
+                const langToggleLanding = document.getElementById('langToggleLanding');
+                const langToggleDashboard = document.getElementById('langToggleDashboard');
+                if (lang === 'en') {
+                    langToggleLanding.textContent = 'മലയാളം';
+                    langToggleDashboard.textContent = 'മലയാളം';
+                } else {
+                    langToggleLanding.textContent = 'English';
+                    langToggleDashboard.textContent = 'English';
+                }
+            };
+
+            const toggleLanguage = () => {
+                const newLang = currentLanguage === 'en' ? 'ml' : 'en';
+                switchLanguage(newLang);
+            };
+
+            document.getElementById('langToggleLanding').addEventListener('click', toggleLanguage);
+            document.getElementById('langToggleDashboard').addEventListener('click', toggleLanguage);
+
+            const landingPage = document.getElementById('landingPage');
+            const dashboard = document.getElementById('dashboard');
+            const authModal = document.getElementById('authModal');
+            const loginBtn = document.getElementById('loginBtn');
+            const getStartedBtn = document.getElementById('getStartedBtn');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const assistanceForm = document.getElementById('assistanceForm');
+            const submitLoginBtn = document.getElementById('submitLoginBtn');
+            const submitSignupBtn = document.getElementById('submitSignupBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const sendMessageBtn = document.getElementById('sendMessageBtn');
+            const chatInput = document.getElementById('chat-input');
+            const chatMessages = document.getElementById('chat-messages');
+            const voiceInputBtn = document.getElementById('voiceInputBtn');
+            const imageUploadBtn = document.getElementById('imageUploadBtn');
+            const imageUploadInput = document.getElementById('imageUpload');
+            const clearChatBtn = document.getElementById('clearChatBtn');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const showSignup = document.getElementById('showSignup');
+            const showLogin = document.getElementById('showLogin');
+            const locationDisplay = document.getElementById('locationDisplay');
+            const signupLocationInput = document.getElementById('signup-location');
+            const sellCropForm = document.getElementById('sellCropForm');
+            const sellCropSelect = document.getElementById('sellCropSelect');
+            const sellMarketPriceDisplay = document.getElementById('sellMarketPriceDisplay');
+            const sellPriceInput = document.getElementById('sellPrice');
+
+            const showModal = () => authModal.style.display = 'flex';
+            const hideModal = () => authModal.style.display = 'none';
+            
+            const showDashboard = () => {
+                const userLocation = signupLocationInput.value.trim() || 'Agartala, Tripura';
+                locationDisplay.textContent = userLocation;
+                landingPage.style.display = 'none';
+                dashboard.style.display = 'block';
+                hideModal();
+            };
+
+            const showLandingPage = () => {
+                landingPage.style.display = 'block';
+                dashboard.style.display = 'none';
+            };
+
+            loginBtn.addEventListener('click', showModal);
+            getStartedBtn.addEventListener('click', showModal);
+            closeModalBtn.addEventListener('click', hideModal);
+            
+            assistanceForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const phone = document.getElementById('assistance-phone').value;
+                const issue = document.getElementById('assistance-issue').value;
+                if (!phone || !issue) {
+                    alert('Please provide your phone number and describe your issue.');
+                    return;
+                }
+                assistanceForm.style.display = 'none';
+                document.getElementById('assistanceSuccessMessage').style.display = 'block';
+
+                setTimeout(() => {
+                    assistanceForm.reset();
+                    assistanceForm.style.display = 'block';
+                    document.getElementById('assistanceSuccessMessage').style.display = 'none';
+                }, 5000);
+            });
+
+            submitLoginBtn.addEventListener('click', showDashboard);
+            submitSignupBtn.addEventListener('click', showDashboard);
+            logoutBtn.addEventListener('click', showLandingPage);
+            
+            showSignup.addEventListener('click', (e) => { e.preventDefault(); loginForm.style.display = 'none'; signupForm.style.display = 'block'; });
+            showLogin.addEventListener('click', (e) => { e.preventDefault(); signupForm.style.display = 'none'; loginForm.style.display = 'block'; });
+
+            const navItems = document.querySelectorAll('.nav-item');
+            const pageContents = document.querySelectorAll('.page-content');
+            const headerTitle = document.getElementById('headerTitle');
+
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    navItems.forEach(i => {
+                        i.classList.remove('bg-green-600', 'text-white');
+                        i.classList.add('text-gray-700');
+                    });
+                    item.classList.add('bg-green-600', 'text-white');
+                    const targetId = item.getAttribute('href').substring(1) + 'View';
+                    pageContents.forEach(content => {
+                        let isChat = content.id === 'chatView' && content.id === targetId;
+                        content.style.display = isChat ? 'flex' : (content.id === targetId ? 'block' : 'none');
+                    });
+                    
+                    const pageKey = item.getAttribute('href').substring(1);
+                    const pageTitles = {
+                        chat: translations[currentLanguage].aiChatAdvisory,
+                        suggestions: translations[currentLanguage].suggestionsAndGuidelines,
+                        market: translations[currentLanguage].marketPrices,
+                        assistance: translations[currentLanguage].assistance,
+                        history: translations[currentLanguage].chatHistory
+                    };
+                    headerTitle.textContent = pageTitles[pageKey];
+                });
+            });
+
+            // --- Sell Crop Form Logic ---
+            sellCropSelect.addEventListener('change', () => {
+                const selectedCrop = sellCropSelect.value;
+                if (selectedCrop && marketData[selectedCrop]) {
+                    const price = marketData[selectedCrop];
+                    sellMarketPriceDisplay.textContent = `Current market price: ₹ ${price} / Quintal.`;
+                    sellPriceInput.value = price;
+                } else {
+                    sellMarketPriceDisplay.textContent = '';
+                    sellPriceInput.value = '';
+                }
+            });
+
+            sellCropForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const crop = sellCropSelect.value;
+                const quantity = document.getElementById('sellQuantity').value;
+                const price = sellPriceInput.value;
+
+                if (!crop || !quantity || !price) {
+                    alert('Please fill in all fields to post your crop for sale.');
+                    return;
+                }
+
+                const activeListingsDiv = document.getElementById('activeSaleListings');
+                if (activeListingsDiv.querySelector('p')) {
+                    activeListingsDiv.innerHTML = ''; // Clear initial message
+                }
+
+                const newListingHTML = `
+                    <div class="bg-green-50 p-3 rounded-lg flex justify-between items-center border border-green-200">
+                        <div>
+                            <p class="font-semibold">${quantity} Quintals of ${crop}</p>
+                            <p class="text-sm text-green-700">Asking Price: <strong>₹ ${price} / Quintal</strong></p>
+                        </div>
+                        <button class="text-xs text-red-500 hover:underline" onclick="this.parentElement.remove()">Remove</button>
+                    </div>
+                `;
+                activeListingsDiv.insertAdjacentHTML('beforeend', newListingHTML);
+                sellCropForm.reset();
+                sellMarketPriceDisplay.textContent = '';
+            });
+
+            let negativeFeedbackCount = 0;
+            const handleSendMessage = () => {
+                const messageText = chatInput.value.trim();
+                if (messageText === '') return;
+                appendUserMessage(messageText);
+                chatInput.value = '';
+                simulateAIResponse(messageText);
+            };
+
+            const appendUserMessage = (text, imageUrl = null) => {
+                let messageContent = `<p class="break-words">${text}</p>`;
+                if(imageUrl) {
+                    messageContent += `<img src="${imageUrl}" alt="Uploaded image" class="mt-2 rounded-lg max-w-xs cursor-pointer" onclick="window.open(this.src)">`;
+                }
+                const userMessageHTML = `
+                    <div class="flex items-start gap-3 justify-end">
+                        <div class="chat-bubble-user p-4 rounded-lg max-w-lg">${messageContent}</div>
+                        <div class="bg-blue-500 p-2 rounded-full text-white self-start"><i class="fas fa-user"></i></div>
+                    </div>`;
+                chatMessages.insertAdjacentHTML('beforeend', userMessageHTML);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            const simulateAIResponse = (userQuery) => {
+                setTimeout(() => {
+                    const aiResponseHTML = `
+                        <div class="flex items-start gap-3">
+                            <div class="bg-green-500 p-2 rounded-full text-white self-start"><i class="fas fa-robot"></i></div>
+                            <div class="chat-bubble-ai p-4 rounded-lg max-w-lg">
+                                <p class="font-semibold mb-1">Krishi Mitra AI</p>
+                                <p class="break-words" data-lang-en='This is a simulated response to: "${userQuery}". For yellow leaves on tomato plants, check for nitrogen deficiency.' data-lang-ml='ഇതൊരു സിമുലേറ്റഡ് പ്രതികരണമാണ്: "${userQuery}". തക്കാളി ചെടികളിലെ മഞ്ഞ ഇലകൾക്ക്, നൈട്രജന്റെ കുറവ് പരിശോധിക്കുക.'>This is a simulated response to: "${userQuery}". For yellow leaves on tomato plants, check for nitrogen deficiency.</p>
+                                <div class="mt-3 pt-2 border-t border-gray-300 text-xs">
+                                    <span data-lang-en="Was this helpful?" data-lang-ml="ഇത് സഹായകമായിരുന്നോ?">Was this helpful?</span>
+                                    <button class="feedback-btn ml-2 p-1 hover:text-green-600" data-feedback="positive"><i class="fas fa-thumbs-up"></i></button>
+                                    <button class="feedback-btn ml-1 p-1 hover:text-red-600" data-feedback="negative"><i class="fas fa-thumbs-down"></i></button>
+                                </div>
+                                <div class="escalation-message hidden mt-2 p-2 bg-red-100 text-red-800 rounded-lg text-sm">
+                                    <p data-lang-en="I'm sorry I couldn't provide a satisfactory answer. Would you like to connect with a local agricultural officer for expert assistance?" data-lang-ml="തൃപ്തികരമായ ഉത്തരം നൽകാൻ എനിക്ക് കഴിഞ്ഞില്ല, ക്ഷമിക്കണം. വിദഗ്ദ്ധ സഹായത്തിനായി ഒരു പ്രാദേശിക കൃഷി ഓഫീസറുമായി ബന്ധപ്പെടാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?">I'm sorry I couldn't provide a satisfactory answer. Would you like to connect with a local agricultural officer for expert assistance?</p>
+                                    <button class="contact-officer-btn font-semibold underline mt-1" data-lang-en="Contact Officer" data-lang-ml="ഓഫീസറുമായി ബന്ധപ്പെടുക">Contact Officer</button>
+                                </div>
+                            </div>
+                        </div>`;
+                    chatMessages.insertAdjacentHTML('beforeend', aiResponseHTML);
+                    switchLanguage(currentLanguage);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1500);
+            };
+
+            sendMessageBtn.addEventListener('click', handleSendMessage);
+            chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSendMessage(); });
+            
+            clearChatBtn.addEventListener('click', () => {
+                chatMessages.innerHTML = `
+                <div class="flex items-start gap-3">
+                    <div class="bg-green-500 p-2 rounded-full text-white self-start"><i class="fas fa-robot"></i></div>
+                    <div class="chat-bubble-ai p-4 rounded-lg max-w-lg">
+                        <p class="font-semibold mb-1">Krishi Mitra AI</p>
+                        <p data-lang-en="Namaste! How can I help you? You can type, use the microphone for Malayalam voice input, or upload an image of your crop." data-lang-ml="നമസ്കാരം! ഞാൻ നിങ്ങളെ എങ്ങനെ സഹായിക്കും? നിങ്ങൾക്ക് ടൈപ്പ് ചെയ്യാം, മലയാളം വോയിസ് ഇൻപുട്ടിനായി മൈക്രോഫോൺ ഉപയോഗിക്കാം, അല്ലെങ്കിൽ നിങ്ങളുടെ വിളയുടെ ചിത്രം അപ്‌ലോഡ് ചെയ്യാം.">Namaste! How can I help you? You can type, use the microphone for Malayalam voice input, or upload an image of your crop.</p>
+                    </div>
+                </div>`;
+                switchLanguage(currentLanguage);
+                negativeFeedbackCount = 0;
+            });
+
+            voiceInputBtn.addEventListener('click', () => {
+                alert('Malayalam voice input feature would be activated here.');
+                chatInput.value = "Voice input: കാലാവസ്ഥ എങ്ങനെ? (How is the weather?)";
+            });
+            
+            imageUploadBtn.addEventListener('click', () => imageUploadInput.click());
+            imageUploadInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        appendUserMessage('Here is an image of my crop.', e.target.result);
+                        simulateAIResponse('Image of a crop');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            chatMessages.addEventListener('click', (e) => {
+                const feedbackBtn = e.target.closest('.feedback-btn');
+                const contactBtn = e.target.closest('.contact-officer-btn');
+                
+                if (contactBtn) {
+                    document.querySelector('a[href="#assistance"]').click();
+                }
+
+                if (!feedbackBtn || feedbackBtn.disabled) return;
+                
+                const messageBubble = feedbackBtn.closest('.chat-bubble-ai');
+                if (feedbackBtn.dataset.feedback === 'negative') {
+                    negativeFeedbackCount++;
+                    feedbackBtn.style.color = 'red';
+                } else {
+                     feedbackBtn.style.color = 'green';
+                }
+                
+                messageBubble.querySelectorAll('.feedback-btn').forEach(btn => btn.disabled = true);
+
+                if (negativeFeedbackCount >= 2) {
+                    const escalationMsg = messageBubble.querySelector('.escalation-message');
+                    if(escalationMsg) escalationMsg.classList.remove('hidden');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
+
